@@ -2,6 +2,8 @@ const profileHeader = document.querySelector(".overview");
 const repoSection = document.querySelector(".repos");
 const repoList = document.querySelector(".repo-list");
 const repoData = document.querySelector(".repo-data");
+const backToGallery = document.querySelector(".view-repos");
+const searchBox = document.querySelector('.filter-repos');
 const username = "amorychambers";
 
 
@@ -40,6 +42,7 @@ async function getRepos (){
 // Fetches public repo data
 
 function displayRepos (repos){
+  searchBox.classList.remove("hide");
   for (let repo of repos){
     let listItem = document.createElement("li");
     listItem.innerHTML = `<h3>${repo.name}</h3>`;
@@ -81,5 +84,27 @@ function displayRepoInfo (singleRepoInfo, languages){
     repoData.append(repoCard);
     repoSection.classList.add("hide");
     repoData.classList.remove("hide");
+    backToGallery.classList.remove("hide");
 };
 // Displays the card with all the specific repo information
+
+backToGallery.addEventListener("click", function(){
+  repoSection.classList.remove("hide");
+  repoData.classList.add("hide");
+  backToGallery.classList.add("hide");
+});
+// Allows the user to switch back to the gallery view
+
+searchBox.addEventListener("input", function(e){
+  const userInput = e.target.value;
+  const repos = document.querySelectorAll(".repo");
+  const searchTerm = userInput.toLowerCase();
+  for (let repo of repos){
+    repoName = repo.innerText.toLowerCase();
+    if (!repoName.includes(searchTerm)){
+      repo.classList.add("hide");
+    } else {
+      repo.classList.remove("hide");
+    }
+  }
+});
